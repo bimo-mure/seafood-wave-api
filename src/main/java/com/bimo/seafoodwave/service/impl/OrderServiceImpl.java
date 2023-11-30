@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -14,13 +16,17 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository repository;
 
     public Order addOrder(Order order){
+        final String orderId = UUID.randomUUID().toString().substring(0,5);
         int total = 0;
         LocalDateTime now = LocalDateTime.now();
         for(int i=0; i < order.getCart().size(); i++){
             total = total+ order.getCart().get(i).getTotalPrice();
+
         }
+        order.setOrderId(orderId);
         order.setOrderPrice(total);
-        order.setEstimatedDelivery(now.plusMinutes(30).toString());
+        order.setOrderDate(now);
+        order.setEstimatedDelivery(now.plusMinutes(12*order.getCart().size()).toString());
         order.setStatus("being prepared");
         return repository.save(order);
     }
@@ -38,6 +44,4 @@ public class OrderServiceImpl implements OrderService {
         exsistingOrder.setEstimatedDelivery(order.getEstimatedDelivery());
         return repository.save(exsistingOrder);
     }
-
-
 }

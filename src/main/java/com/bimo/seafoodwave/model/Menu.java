@@ -18,7 +18,7 @@ public class Menu {
     private String name;
     private Integer unitPrice;
     private String imageUrl;
-    private List<String> choiseOfDhises;
+    private List<String> chooseOfDishes;
     private String category;
     private Boolean soldOut;
 }

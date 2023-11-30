@@ -37,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
         exsistingMenu.setImageUrl(menu.getImageUrl());
         exsistingMenu.setSoldOut(menu.getSoldOut());
         exsistingMenu.setUnitPrice(menu.getUnitPrice());
-        exsistingMenu.setChoiseOfDhises(menu.getChoiseOfDhises());
+        exsistingMenu.setChooseOfDishes(menu.getChooseOfDishes());
         return repository.save(exsistingMenu);
     }
 
