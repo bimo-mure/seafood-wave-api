@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_ID: ${{ secret.GCP_PROJECT_ID }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: ${{ env.GCP_REGION }}
   REPOSITORY: ${{ env.GCP_REPOSITORY }}
   SERVICE: ${{ env.GCP_SERVICE }}
