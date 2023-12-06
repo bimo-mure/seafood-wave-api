@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  PROJECT_ID: ${{ secret.GCP_PROJECT_ID }}
+  REGION: ${{ env.GCP_REGION }}
+  REPOSITORY: ${{ env.GCP_REPOSITORY }}
+  SERVICE: ${{ env.GCP_SERVICE }}
+
 jobs:
   build:
 
@@ -15,6 +21,16 @@ jobs:
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+        token_format: access_token
+
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.10.0
       with:
@@ -23,7 +39,7 @@ jobs:
         mongodb-password: ${{ secrets.MONGODB_PASSWORD }}
         mongodb-db: ${{ secrets.MONGODB_DB }}
 
-    - uses: actions/checkout@v3
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -41,3 +57,13 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        service: ${{ env.SERVICE }}
+        region: ${{ env.REGION }}
+        tags: latest
+        registry: docker.io
+        image: bimomure/seafood-wave-api
