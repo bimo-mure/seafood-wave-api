@@ -60,13 +60,11 @@ jobs:
 
     - name: Deploy to Cloud Run
       id: deploy
-      uses: google-github-actions/deploy-cloudrun@v0
+      uses: google-github-actions/deploy-cloudrun@v1
       with:
         service: ${{ vars.GCP_SERVICE }}
         region: ${{ vars.GCP_REGION }}
-        tags: latest
-        registry: docker.io
-        image: bimomure/seafood-wave-api
+        image: docker.io/bimomure/seafood-wave-api
 
     - name: Show Output
       run: echo ${{ steps.deploy.outputs.url }}
