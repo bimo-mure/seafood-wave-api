@@ -26,7 +26,7 @@ jobs:
 
     - name: Google Auth
       id: auth
-      uses: google-github-actions/auth@v0
+      uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
         token_format: access_token
@@ -62,8 +62,8 @@ jobs:
       id: deploy
       uses: google-github-actions/deploy-cloudrun@v0
       with:
-        service: ${{ vars.SERVICE }}
-        region: ${{ vars.REGION }}
+        service: ${{ vars.GCP_SERVICE }}
+        region: ${{ vars.GCP_REGION }}
         tags: latest
         registry: docker.io
         image: bimomure/seafood-wave-api
