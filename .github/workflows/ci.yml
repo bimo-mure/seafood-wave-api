@@ -8,9 +8,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  REGION: ${{ env.GCP_REGION }}
-  REPOSITORY: ${{ env.GCP_REPOSITORY }}
-  SERVICE: ${{ env.GCP_SERVICE }}
+  REGION: ${{ vars.GCP_REGION }}
+  REPOSITORY: ${{ vars.GCP_REPOSITORY }}
+  SERVICE: ${{ vars.GCP_SERVICE }}
 
 jobs:
   build:
@@ -62,8 +62,11 @@ jobs:
       id: deploy
       uses: google-github-actions/deploy-cloudrun@v0
       with:
-        service: ${{ env.SERVICE }}
-        region: ${{ env.REGION }}
+        service: ${{ vars.SERVICE }}
+        region: ${{ vars.REGION }}
         tags: latest
         registry: docker.io
         image: bimomure/seafood-wave-api
+
+    - name: Show Output
+      run: echo ${{ steps.deploy.outputs.url }}
