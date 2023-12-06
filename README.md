@@ -26,7 +26,7 @@ Seafood Wave API is designed to provide a RESTful interface for managing seafood
 - **Spring Boot:** Framework for creating Java-based, production-grade Spring applications.
 - **Spring Data MongoDB:** Simplifies the implementation of MongoDB data access layers.
 - **MongoDB:** NoSQL database for storing seafood-related data.
-
+- **CICD:** Simple CI/CD with Github Action, Containerization with Dokcer, and Deploy to Google Cloud Run
 ## Getting Started
 
 1. Clone the repository:
