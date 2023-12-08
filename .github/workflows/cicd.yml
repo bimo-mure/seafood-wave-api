@@ -41,6 +41,9 @@ jobs:
 
     runs-on: [aws-seafood-wave]
     steps:
+      - name: Login to Docker HUB
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p  ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Pull Docker Image
         run: docker pull ${{ vars.DOCKER_IMAGE_NAME }}:latest
 
