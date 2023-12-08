@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     env:
       MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
       MONGODB_DB: ${{ secrets.MONGODB_DB }}
@@ -38,8 +37,11 @@ jobs:
 
   deploy:
     needs: build
-
     runs-on: [aws-seafood-wave]
+    env:
+      MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
+      MONGODB_DB: ${{ secrets.MONGODB_DB }}
+
     steps:
       - name: Login to Docker HUB
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p  ${{ secrets.DOCKER_PASSWORD }}
@@ -51,7 +53,4 @@ jobs:
         run: docker rm -f seafood-wave-api-container
 
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name seafood-wave-api-container \
-          -e MONGODB_CONNECTION_STRING="${MONGODB_CONNECTION_STRING}" \
-          -e MONGODB_DB="${MONGODB_DB}" \
-          ${{ env.DOCKER_IMAGE_NAME }}
+        run: docker run -d -p 8080:8080 --name seafood-wave-api-container -e MONGODB_CONNECTION_STRING="${MONGODB_CONNECTION_STRING}" -e MONGODB_DB="${MONGODB_DB}" ${{ vars.DOCKER_IMAGE_NAME }}
