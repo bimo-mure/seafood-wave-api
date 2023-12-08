@@ -62,10 +62,11 @@ jobs:
       run: docker pull bimomure/seafood-wave-api:latest
 
     - name: Tag Docker Image
-      run: docker tag bimomure/seafood-wave-api:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/bimomure/seafood-wave-api
+      run:  docker tag bimomure/seafood-wave-api:latest ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/bimomure/seafood-wave-api:latest
 
-    - name: Push Docker Image to Google Container Registry
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/bimomure/seafood-wave-api
+    - name: Push Docker Image to to Artifact Registry
+      run: docker push ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/bimomure/seafood-wave-api:latest
+
 
     - name: Deploy to Cloud Run
       id: deploy
@@ -73,7 +74,7 @@ jobs:
       with:
         service: ${{ vars.GCP_SERVICE }}
         region: ${{ vars.GCP_REGION }}
-        image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bimomure/seafood-wave-api
+        image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/bimomure/seafood-wave-api:latest
 
     - name: Show Output
       run: echo ${{ steps.deploy.outputs.url }}
