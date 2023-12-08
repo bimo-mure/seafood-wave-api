@@ -68,8 +68,6 @@ jobs:
     - name: Push Docker Image to to Artifact Registry
       run: docker push ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
 
-    - name: Clean up previous versions
-      run: gcloud run services delete ${{ vars.GCP_SERVICE }} --region=${{ vars.GCP_REGION }} --quiet
 
     - name: Deploy to Cloud Run
       id: deploy
