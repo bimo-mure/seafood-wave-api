@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Seafood Wave API CI/CD
 
 on:
   push:
@@ -27,14 +27,14 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v6
-      with:
-        image: ${{ vars.DOCKER_IMAGE_NAME }}
-        tags: latest
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Login to Docker HUB
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} p  ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker Image
+      run: docker build -t ${{ vars.DOCKER_IMAGE_NAME }} .
+
+    - name: Push image to Docker HUB
+      run: docker push ${{ vars.DOCKER_IMAGE_NAME }}:latest
 
   deploy:
     needs: build
