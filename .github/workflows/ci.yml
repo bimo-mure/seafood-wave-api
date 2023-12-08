@@ -63,10 +63,10 @@ jobs:
       run: docker pull ${{ vars.DOCKER_IMAGE_NAME }}:latest
 
     - name: Tag Docker Image
-      run:  docker tag ${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}
+      run:  docker tag ${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
 
     - name: Push Docker Image to to Artifact Registry
-      run: docker push ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}
+      run: docker push ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
 
     - name: Deploy to Cloud Run
       id: deploy
@@ -74,8 +74,8 @@ jobs:
       with:
         service: ${{ vars.GCP_SERVICE }}
         region: ${{ vars.GCP_REGION }}
-        image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}
+        image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
 
     - name: Show Output
-      run: echo ${{ steps.deploy.outputs.url }}
+      run: echo ${{ steps.build-and-deploy.outputs.url }}
 
