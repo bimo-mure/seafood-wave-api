@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-deploy:
-
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
       matrix:
