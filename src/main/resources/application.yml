@@ -1,5 +1,5 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://bimomure:uvFo4Mps29bFyuR1@cluster0.5fgw1qu.mongodb.net/?retryWrites=true&w=majority
-      database: seafood-wave-db
+      uri: ${MONGODB_CONNECTION_STRING}
+      database: ${MONGODB_DB}
