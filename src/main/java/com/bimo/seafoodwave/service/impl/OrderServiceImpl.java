@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Service
@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
     public Order addOrder(Order order){
         final String orderId = UUID.randomUUID().toString().substring(0,5);
         int total = 0;
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
         for(int i=0; i < order.getCart().size(); i++){
             total = total+ order.getCart().get(i).getTotalPrice();
 
